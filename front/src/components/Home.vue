@@ -126,11 +126,33 @@ export default {
   },
 
   beforeMount () {
+    // this.posts = [
+    //   { title: '1 Céu', content: 'Um Sol<br>Uma Lua<br>Papel...' },
+    //   { title: '2 Noite', content: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
+    //   { title: '3 Hey... Apontador!', content: 'Um Sol<br>Uma Lua<br>Apontador...' },
+    //   {
+    //     title: '4 Hey... Apontador! Hey... Apontador! Hey... Apontador!',
+    //     content: 'Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...'
+    //   },
+    //   { title: '5 Noite', content: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
+    //   { title: '6 Noite', content: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
+    //   { title: '7 Noite', content: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
+    //   { title: '8 Céu', content: 'Um Sol<br>Uma Lua<br>Papel...' },
+    //   { title: '9 Céu', content: 'Um Sol<br>Uma Lua<br>Papel...' },
+    //   {
+    //     title: '10 Hey... Apontador!',
+    //     content: 'Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...'
+    //   },
+    //   { title: '11 Céu', content: 'Um Sol<br>Uma Lua<br>Papel...' },
+    //   { title: '12 Noite', content: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' }
+    // ]
+
     axios.get('/api/post')
     .then(res => {
       this.posts = res.data
     })
     .then(() => {
+      this.$redrawVueMasonry()
       this.changeColor = false
     })
   }
