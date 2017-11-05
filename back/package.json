@@ -1,0 +1,30 @@
+{
+  "name": "chuva-literal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node bin/server",
+    "test": "nodemon bin/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renanroberto/chuva-literal.git"
+  },
+  "keywords": [
+    "node",
+    "js"
+  ],
+  "author": "Renan Roberto <renanroberto1@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/renanroberto/chuva-literal/issues"
+  },
+  "homepage": "https://github.com/renanroberto/chuva-literal#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "http": "0.0.0",
+    "mongoose": "^4.12.4"
+  }
+}
