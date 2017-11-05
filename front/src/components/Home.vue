@@ -2,7 +2,10 @@
   <div>
     <header-bar />
 
-    <div v-if="admin" class="add"><a href="#add"><i class="material-icons">note_add</i></a></div>
+    <div v-if="admin" class="add">
+      <a href="#add"><i class="material-icons">note_add</i></a>
+      <span @click="logout"><i class="material-icons">exit_to_app</i></span>
+    </div>
 
     <div id="add" class="lightbox">
       <div class="lightbox-content">
@@ -20,7 +23,7 @@
                 <span><input type="text" v-model="prev.title"></span>
               </div>
               <div class="text">
-                <textarea rows="10" cols="40" v-model="prev.text"></textarea>
+                <textarea rows="10" cols="40" v-model="prev.content"></textarea>
               </div>
             </div>
             <div class="submit">
@@ -33,7 +36,7 @@
             <div class="title" :style="'background-color: ' + randomColor()">
               <span>{{ prev.title }}</span>
             </div>
-            <div class="text" v-html="prev.text"></div>
+            <div class="text" v-html="prev.content"></div>
           </div>
         </div>
       </div>
@@ -48,7 +51,7 @@
             <span style="flex: 1; overflow: hidden">{{ post.title }}</span>
             <span v-if="admin" class="cross"><i class="material-icons">close</i></span>
           </div>
-          <div class="text" v-html="post.text"></div>
+          <div class="text" v-html="post.content"></div>
         </div>
       </div>
     </section>
@@ -58,7 +61,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 import HeaderBar from './Header'
 import FooterBar from './Footer'
@@ -73,7 +76,7 @@ export default {
       changeColor: true,
       loaded: false,
       posts: [],
-      prev: {title: '', text: ''}
+      prev: {title: '', content: ''}
     }
   },
 
@@ -93,36 +96,43 @@ export default {
     },
 
     addPost () {
-      alert(this.prev.title)
-      // alert(this.prev.text)
+      axios.post('/api/post', {
+        title: this.prev.title,
+        content: this.prev.content
+      })
+      .then(() => {
+        alert('Post adicionado com sucesso!')
+        window.location = '/'
+      })
+      .catch(err => {
+        console.log(err.message)
+        alert('Ocorreu um erro =(')
+      })
+    },
+
+    logout () {
+      axios.get('/api/logout')
+      .then(() => {
+        location.reload()
+      })
     }
   },
 
-  beforeMount () {
-    this.posts = [
-      { title: '1 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
-      { title: '2 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
-      { title: '3 Hey... Apontador!', text: 'Um Sol<br>Uma Lua<br>Apontador...' },
-      {
-        title: '4 Hey... Apontador! Hey... Apontador! Hey... Apontador!',
-        text: 'Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...'
-      },
-      { title: '5 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
-      { title: '6 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
-      { title: '7 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
-      { title: '8 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
-      { title: '9 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
-      {
-        title: '10 Hey... Apontador!',
-        text: 'Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...Um Sol<br>Uma Lua<br>Apontador...'
-      },
-      { title: '11 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
-      { title: '12 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' }
-    ]
+  beforeCreate () {
+    axios.get('/api/admin')
+    .then(res => {
+      this.admin = res.data.auth
+    })
   },
 
-  mounted () {
-    this.changeColor = false
+  beforeMount () {
+    axios.get('/api/post')
+    .then(res => {
+      this.posts = res.data
+    })
+    .then(() => {
+      this.changeColor = false
+    })
   }
 }
 </script>
@@ -174,10 +184,14 @@ export default {
     margin-top: -50px;
     width: 98%;
     text-align: right;
+  }
+  .add a {
+    cursor: pointer;
     color: #00C853;
   }
-  .add i {
+  .add span {
     cursor: pointer;
+    color: #d50000;
   }
 
   .cross {
