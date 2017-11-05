@@ -34,8 +34,10 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
+  text-decoration: inherit;
 	font-size: 100%;
 	font: inherit;
+  color: inherit;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */

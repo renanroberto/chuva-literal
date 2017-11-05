@@ -2,7 +2,42 @@
   <div>
     <header-bar />
 
-    <div v-if="admin" class="add"><i class="material-icons">note_add</i></div>
+    <div v-if="admin" class="add"><a href="#add"><i class="material-icons">note_add</i></a></div>
+
+    <div id="add" class="lightbox">
+      <div class="lightbox-content">
+        <div class="lightbox-title">
+          <span style="flex: 1"></span>
+          <span>Novo Post</span>
+          <span style="flex: 1"></span>
+          <span class="lightbox-close"><a href="/"><i class="material-icons">close</i></a></span>
+        </div>
+        <div class="raw">
+          <form @submit.prevent="onSubmit">
+            <br>
+            <div class="post">
+              <div class="title" :style="'background-color: ' + randomColor()">
+                <span><input type="text" v-model="prev.title"></span>
+              </div>
+              <div class="text">
+                <textarea rows="10" cols="40" v-model="prev.text"></textarea>
+              </div>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Add" />
+            </div>
+          </form>
+        </div>
+        <div class="preview">
+          <div class="post" style="border: 1px solid lightgrey">
+            <div class="title" :style="'background-color: ' + randomColor()">
+              <span>{{ prev.title }}</span>
+            </div>
+            <div class="text" v-html="prev.text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section>
       <div class="container" data-masonry='{ "itemSelector": ".post", "columnWidth": ".post-sizer", "gutter": 15, "fitWidth": true }'>
@@ -23,7 +58,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 import HeaderBar from './Header'
 import FooterBar from './Footer'
@@ -35,33 +70,35 @@ export default {
   data: function () {
     return {
       admin: false,
-      posts: []
+      changeColor: true,
+      loaded: false,
+      posts: [],
+      prev: {title: '', text: ''}
     }
   },
 
   methods: {
     randomColor () {
-      let trans = 1
+      if (this.changeColor) {
+        let trans = 1
 
-      let colors = [
-        `rgba(7,25,48,${trans})`,
-        `rgba(3,77,112,${trans})`,
-        `rgba(3,166,148,${trans})`
-      ]
+        let colors = [
+          `rgba(7,25,48,${trans})`,
+          `rgba(3,77,112,${trans})`,
+          `rgba(3,166,148,${trans})`
+        ]
 
-      return colors[Math.floor((Math.random() * colors.length))]
+        return colors[Math.floor((Math.random() * colors.length))]
+      }
+    },
+
+    onSubmit () {
+      // alert(this.prev.title)
+      // alert(this.prev.text)
     }
   },
 
   beforeMount () {
-    axios.get('/api/admin')
-    .then(res => {
-      this.admin = res.data.auth
-    })
-    .catch(err => {
-      console.log(err.message)
-    })
-
     this.posts = [
       { title: '1 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
       { title: '2 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' },
@@ -82,6 +119,10 @@ export default {
       { title: '11 Céu', text: 'Um Sol<br>Uma Lua<br>Papel...' },
       { title: '12 Noite', text: 'Um Sol<br>Uma Lua<br>Um Sol<br>Uma Lua<br>Borracha...' }
     ]
+  },
+
+  mounted () {
+    this.changeColor = false
   }
 }
 </script>
@@ -146,5 +187,79 @@ export default {
   }
   .cross i {
     cursor: pointer;
+  }
+
+  /*LIGHTBOX*/
+  .lightbox {
+    display: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+  	width: 100%;
+  	height: 100%;
+    z-index: 999;
+  	justify-content: center;
+    align-items: center;
+  	background: rgba(0,0,0,0.8);
+  }
+
+  .lightbox:target {
+    display: flex;
+  }
+
+  .lightbox-close {
+    color: grey;
+    cursor: pointer;
+  }
+
+  .lightbox-content {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+
+
+    width: auto;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .lightbox-title {
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: center;
+    font-size: 2em;
+  }
+
+  .raw .title {
+    padding: .75em 2px;
+  }
+
+  .raw .text {
+    padding: 0;
+  }
+
+  .submit {
+    text-align: center;
+  }
+  .submit input {
+    width: 100%;
+    border: none;
+    padding: 10px 10px;
+    background-color: #00C853;
+    color: black;
+    cursor: pointer;
+  }
+
+  input {
+    font-size: 1em;
+    color: white;
+    border: none;
+    border-bottom: 1px solid lightgrey;
+    background-color: transparent
+  }
+
+  input:focus {
+    outline: none;
   }
 </style>

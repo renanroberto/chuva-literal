@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="login-box">
+    <div v-if="!logged" class="login-box">
       <form @submit.prevent="onSubmit">
         <div class="title">Admin Area</div>
         <br>
@@ -19,6 +19,9 @@
         </div>
       </form>
     </div>
+    <div v-else>
+      <h1><router-link :to="{ name: 'Home' }">Back to home</router-link></h1>
+    </div>
   </div>
 </template>
 
@@ -28,6 +31,7 @@ import axios from 'axios'
 export default {
   data: function () {
     return {
+      logged: true,
       user: '',
       pass: ''
     }
