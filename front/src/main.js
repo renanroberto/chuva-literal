@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import {VueMasonryPlugin} from 'vue-masonry'
+
+Vue.use(VueMasonryPlugin)
 
 Vue.config.productionTip = false
 

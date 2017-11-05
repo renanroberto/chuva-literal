@@ -13,7 +13,7 @@
           <span class="lightbox-close"><a href="/"><i class="material-icons">close</i></a></span>
         </div>
         <div class="raw">
-          <form @submit.prevent="onSubmit">
+          <form @submit.prevent="addPost">
             <br>
             <div class="post">
               <div class="title" :style="'background-color: ' + randomColor()">
@@ -40,9 +40,9 @@
     </div>
 
     <section>
-      <div class="container">
-        <div class="post-sizer">
-        </div>
+      <div class="container" v-masonry item-selector=".post" fit-width="true" gutter=".gutter-sizer">
+        <div class="post-sizer"></div>
+        <div class="gutter-sizer"></div>
         <div class="post" v-for="post in posts">
           <div class="title" :style="'background-color: ' + randomColor()">
             <span style="flex: 1; overflow: hidden">{{ post.title }}</span>
@@ -92,8 +92,8 @@ export default {
       }
     },
 
-    onSubmit () {
-      // alert(this.prev.title)
+    addPost () {
+      alert(this.prev.title)
       // alert(this.prev.text)
     }
   },
@@ -143,7 +143,8 @@ export default {
   .container {
     width: 100%;
   }
-
+  .gutter-sizer { width: 15px }
+  .post-sizer { width: 300px }
   .post {
     width: 300px;
     margin-bottom: 15px;
