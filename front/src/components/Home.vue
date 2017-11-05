@@ -40,7 +40,7 @@
     </div>
 
     <section>
-      <div class="container" data-masonry='{ "itemSelector": ".post", "columnWidth": ".post-sizer", "gutter": 15, "fitWidth": true }'>
+      <div class="container">
         <div class="post-sizer">
         </div>
         <div class="post" v-for="post in posts">
@@ -143,8 +143,6 @@ export default {
   .container {
     width: 100%;
   }
-
-  .post-sizer { width: 300px }
 
   .post {
     width: 300px;
